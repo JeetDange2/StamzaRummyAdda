@@ -18,8 +18,9 @@ onAuthStateChanged(auth, (user) => {
         
         onSnapshot(collection(db, 'players'), (snapshot) => {
             players = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            if (window.renderPlayers) window.renderPlayers();
             if (window.updateDashboard) window.updateDashboard();
+            if (window.updateHistory) window.updateHistory();
+            if (window.renderPlayers) window.renderPlayers();
         });
 
         onSnapshot(collection(db, 'games'), (snapshot) => {
