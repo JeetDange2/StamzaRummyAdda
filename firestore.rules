@@ -1,0 +1,137 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: players
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (required, < 50 chars)
+    //   - createdAt: string (required, valid ISO date)
+    //
+    // Collection: games
+    // Document ID: auto-generated
+    // Fields:
+    //   - date: string (required, valid ISO date)
+    //   - scores: list of objects (required, max 20)
+    //     - playerId: string
+    //     - score: number
+    //   - winnerId: string (required)
+    //   - rule: string (required, 'lowest' or 'highest')
+    //
+    // Collection: dares
+    // Document ID: auto-generated
+    // Fields:
+    //   - text: string (required, < 200 chars)
+    //
+    // Collection: seasons
+    // Document ID: auto-generated
+    // Fields:
+    //   - name: string (required, < 100 chars)
+    //   - date: string (required, valid ISO date)
+    //   - leaderboard: list of objects (required, max 100)
+    //     - id: string
+    //     - name: string
+    //     - wins: number
+    //     - totalPoints: number
+    //     - totalGames: number
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidDateString(dateStr) {
+      return dateStr is string &&
+        dateStr.matches("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.*Z?$");
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+    function isValidPlayer(data) {
+      return hasOnlyAllowedFields(['name', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 50 &&
+             isValidDateString(data.createdAt);
+    }
+
+    function isValidGameScore(scoreObj) {
+      return scoreObj.keys().hasOnly(['playerId', 'score']) &&
+             scoreObj.playerId is string && scoreObj.playerId.size() > 0 && scoreObj.playerId.size() < 100 &&
+             scoreObj.score is number;
+    }
+
+    function isValidGameScoresList(scores) {
+      return scores is list && scores.size() > 0 && scores.size() <= 20;
+    }
+
+    function isValidGame(data) {
+      return hasOnlyAllowedFields(['date', 'scores', 'winnerId', 'rule']) &&
+             isValidDateString(data.date) &&
+             isValidGameScoresList(data.scores) &&
+             data.winnerId is string && data.winnerId.size() > 0 && data.winnerId.size() < 100 &&
+             data.rule in ['lowest', 'highest'];
+    }
+
+    function isValidDare(data) {
+      return hasOnlyAllowedFields(['text']) &&
+             data.text is string && data.text.size() > 0 && data.text.size() < 200;
+    }
+
+    function isValidSeasonLeaderboardList(leaderboard) {
+      return leaderboard is list && leaderboard.size() >= 0 && leaderboard.size() <= 100;
+    }
+
+    function isValidSeason(data) {
+      return hasOnlyAllowedFields(['name', 'date', 'leaderboard']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             isValidDateString(data.date) &&
+             isValidSeasonLeaderboardList(data.leaderboard);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+    
+    // Allow any authenticated user to read and write, as this is a shared game tracker for friends.
+    // We enforce schema validation to prevent data corruption.
+    
+    match /players/{playerId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidPlayer(request.resource.data);
+      allow update: if isAuthenticated() && isValidPlayer(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+
+    match /games/{gameId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidGame(request.resource.data);
+      allow update: if isAuthenticated() && isValidGame(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+
+    match /dares/{dareId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidDare(request.resource.data);
+      allow update: if isAuthenticated() && isValidDare(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+
+    match /seasons/{seasonId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidSeason(request.resource.data);
+      allow update: if isAuthenticated() && isValidSeason(request.resource.data);
+      allow delete: if isAuthenticated();
+    }
+  }
+}

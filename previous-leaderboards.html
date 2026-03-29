@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Leaderboards - Rummy Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">🃏 RummyHub</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="players.html">Players</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href="previous-leaderboards.html" class="active">Previous Leaderboards</a></li>
+        </ul>
+        <button id="theme-toggle" class="icon-btn">🌙</button>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Previous Leaderboards</h1>
+        </div>
+
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="margin: 0;">📜 Past Seasons</h2>
+                <select id="season-select" style="width: auto; padding: 5px 10px; font-size: 0.9rem;">
+                    <!-- Options injected via JS -->
+                </select>
+            </div>
+            <div class="table-responsive">
+                <table id="prev-leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Wins</th>
+                            <th>Total Points</th>
+                            <th>Win Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

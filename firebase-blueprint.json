@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "Player": {
+      "title": "Player",
+      "description": "A player in the rummy game",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name"]
+    },
+    "GameScore": {
+      "title": "GameScore",
+      "description": "A player's score in a game",
+      "type": "object",
+      "properties": {
+        "playerId": { "type": "string" },
+        "score": { "type": "number" }
+      },
+      "required": ["playerId", "score"]
+    },
+    "Game": {
+      "title": "Game",
+      "description": "A recorded rummy game",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date-time" },
+        "scores": {
+          "type": "array",
+          "items": { "$ref": "#/entities/GameScore" }
+        },
+        "winnerId": { "type": "string" },
+        "rule": { "type": "string", "enum": ["lowest", "highest"] }
+      },
+      "required": ["date", "scores", "winnerId", "rule"]
+    },
+    "Dare": {
+      "title": "Dare",
+      "description": "A dare for the loser wheel",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" }
+      },
+      "required": ["text"]
+    },
+    "SeasonLeaderboardEntry": {
+      "title": "SeasonLeaderboardEntry",
+      "description": "A player's stats in a season",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "wins": { "type": "number" },
+        "totalPoints": { "type": "number" },
+        "totalGames": { "type": "number" }
+      },
+      "required": ["id", "name", "wins", "totalPoints", "totalGames"]
+    },
+    "Season": {
+      "title": "Season",
+      "description": "A completed season of games",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "leaderboard": {
+          "type": "array",
+          "items": { "$ref": "#/entities/SeasonLeaderboardEntry" }
+        }
+      },
+      "required": ["name", "date", "leaderboard"]
+    }
+  },
+  "firestore": {
+    "players/{playerId}": {
+      "schema": "#/entities/Player",
+      "description": "Players in the game"
+    },
+    "games/{gameId}": {
+      "schema": "#/entities/Game",
+      "description": "Recorded games"
+    },
+    "dares/{dareId}": {
+      "schema": "#/entities/Dare",
+      "description": "Dares for the loser wheel"
+    },
+    "seasons/{seasonId}": {
+      "schema": "#/entities/Season",
+      "description": "Completed seasons"
+    }
+  }
+}

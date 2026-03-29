@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rummy Tracker Hub - History</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">🃏 Rummy Hub</div>
+        <ul class="nav-links">
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/players.html">Players</a></li>
+            <li><a href="/history.html" class="active">History</a></li>
+            <li><a href="/previous-leaderboards.html">Previous Leaderboards</a></li>
+        </ul>
+        <button id="theme-toggle" class="icon-btn">🌙</button>
+    </nav>
+
+    <main class="container">
+        <header class="dashboard-header">
+            <h1>Game History</h1>
+            <div class="filter-group">
+                <label for="history-filter">Filter by Player: </label>
+                <select id="history-filter">
+                    <option value="all">All Players</option>
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+        </header>
+
+        <div class="history-list" id="full-history-list">
+            <!-- Populated by JS -->
+        </div>
+    </main>
+
+    <script type="module" src="/script.js"></script>
+</body>
+</html>

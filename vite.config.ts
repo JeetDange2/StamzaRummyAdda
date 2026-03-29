@@ -1,0 +1,29 @@
+import path from 'path';
+import {defineConfig, loadEnv} from 'vite';
+
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, '.', '');
+  return {
+    define: {
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
+      },
+    },
+    server: {
+      hmr: process.env.DISABLE_HMR !== 'true',
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          players: path.resolve(__dirname, 'players.html'),
+          history: path.resolve(__dirname, 'history.html'),
+          previousLeaderboards: path.resolve(__dirname, 'previous-leaderboards.html'),
+        },
+      },
+    },
+  };
+});

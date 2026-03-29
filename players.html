@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rummy Tracker Hub - Players</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">🃏 Rummy Hub</div>
+        <ul class="nav-links">
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/players.html" class="active">Players</a></li>
+            <li><a href="/history.html">History</a></li>
+            <li><a href="/previous-leaderboards.html">Previous Leaderboards</a></li>
+        </ul>
+        <button id="theme-toggle" class="icon-btn">🌙</button>
+    </nav>
+
+    <main class="container">
+        <header class="dashboard-header">
+            <h1>Player Management</h1>
+            <button id="add-player-btn" class="primary-btn">+ Add Player</button>
+        </header>
+
+        <div id="players-grid" class="players-grid">
+            <!-- Populated by JS -->
+        </div>
+    </main>
+
+    <!-- Add/Edit Player Modal -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close-btn">&times;</span>
+            <h2 id="player-modal-title">Add Player</h2>
+            <form id="player-form">
+                <input type="hidden" id="player-id">
+                <div class="form-group">
+                    <label for="player-name">Name:</label>
+                    <input type="text" id="player-name" required placeholder="Enter player name">
+                </div>
+                <button type="submit" class="primary-btn w-full">Save Player</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/script.js"></script>
+</body>
+</html>

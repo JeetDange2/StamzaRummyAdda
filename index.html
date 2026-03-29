@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rummy Tracker Hub - Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="logo">🃏 Rummy Hub</div>
+        <ul class="nav-links">
+            <li><a href="/" class="active">Dashboard</a></li>
+            <li><a href="/players.html">Players</a></li>
+            <li><a href="/history.html">History</a></li>
+        </ul>
+        <button id="theme-toggle" class="icon-btn">🌙</button>
+    </nav>
+
+    <main class="container">
+        <header class="dashboard-header">
+            <h1>Dashboard</h1>
+            <button id="new-game-btn" class="primary-btn">+ New Game</button>
+        </header>
+
+        <section class="stats-overview">
+            <div class="stat-card glass-card">
+                <h3 style="margin-bottom: 10px;">Games Played</h3>
+                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div class="text-center">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Sitting</span>
+                        <p id="session-games" style="font-size: 1.5rem; line-height: 1;">0</p>
+                    </div>
+                    <div class="text-center">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Today</span>
+                        <p id="today-games" style="font-size: 1.5rem; line-height: 1;">0</p>
+                    </div>
+                    <div class="text-center">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">All Time</span>
+                        <p id="total-games" style="font-size: 1.5rem; line-height: 1;">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card glass-card">
+                <h3>Top Player</h3>
+                <p id="top-player">-</p>
+            </div>
+            <div class="stat-card glass-card">
+                <h3>On Fire 🔥</h3>
+                <p id="on-fire-player">-</p>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+            <section class="leaderboard-section glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="margin: 0;">🏆 Leaderboard</h2>
+                    <select id="leaderboard-filter" style="width: auto; padding: 5px 10px; font-size: 0.9rem;">
+                        <option value="wins">Sort by Wins</option>
+                        <option value="sittingPoints">Sort by Points (This Sitting)</option>
+                        <option value="points">Sort by Total Points</option>
+                    </select>
+                </div>
+                <div class="table-responsive">
+                    <table id="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Wins</th>
+                                <th>Points (This Sitting)</th>
+                                <th>Total Points</th>
+                                <th>Win Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="recent-matches-section glass-card">
+                <h2>🕒 Recent Matches</h2>
+                <ul id="recent-matches-list" class="match-list">
+                    <!-- Populated by JS -->
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <!-- New Game Modal -->
+    <div id="new-game-modal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close-btn">&times;</span>
+            <h2>Record New Game</h2>
+            <form id="new-game-form">
+                <div class="form-group">
+                    <label>Select Players (Min 2):</label>
+                    <div id="player-checkboxes" class="checkbox-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                <div id="score-inputs" class="score-grid">
+                    <!-- Populated by JS when players are selected -->
+                </div>
+                <div class="form-group">
+                    <label>Winner Rule:</label>
+                    <select id="winner-rule">
+                        <option value="lowest">Lowest Score Wins (Standard Rummy)</option>
+                        <option value="highest">Highest Score Wins</option>
+                    </select>
+                </div>
+                <button type="submit" class="primary-btn w-full">Save Game</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loser Wheel Modal -->
+    <div id="loser-wheel-modal" class="modal">
+        <div class="modal-content glass-card text-center">
+            <span class="close-btn-wheel">&times;</span>
+            <h2>Spin the Dare Wheel</h2>
+            <p id="biggest-loser-text">Who's buying snacks?</p>
+            <div class="wheel-container">
+                <div id="wheel" class="wheel"></div>
+                <div class="wheel-pointer">▼</div>
+            </div>
+            <button id="spin-btn" class="primary-btn mt-4">Spin for Dare!</button>
+            <h3 id="wheel-result" class="mt-4 hidden"></h3>
+            
+            <div class="dares-management" style="margin-top: 30px; text-align: left; border-top: 1px solid var(--glass-border); padding-top: 15px;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 10px;">Manage Dares</h3>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" id="new-dare-input" placeholder="Enter a new dare..." style="flex: 1;">
+                    <button id="add-dare-btn" class="primary-btn">Add</button>
+                </div>
+                <ul id="dares-list" style="list-style: none; padding: 0; max-height: 150px; overflow-y: auto; font-size: 0.9rem;"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/script.js"></script>
+</body>
+</html>
+
